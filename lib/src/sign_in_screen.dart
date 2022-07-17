@@ -93,13 +93,16 @@ class SignInScreen extends StatelessWidget {
                       suffixIcon: Icons.mail,
                     ),
                     // Senha
-                    const CustomTextField(
+                    CustomTextField(
                       icon: Icons.password,
                       labelText: 'Senha',
                       obscureText: true,
                     ),
 
-                    const CustomElevatedButton(),
+                    CustomElevatedButton(
+                      onPressed: () {},
+                      label: 'Entrar',
+                    ),
                     Align(
                       alignment: Alignment.centerRight,
                       child: TextButton(
