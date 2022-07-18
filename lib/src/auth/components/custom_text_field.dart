@@ -40,8 +40,8 @@ class CustomTextField extends StatelessWidget {
     filter: {'#': RegExp(r'[0-9]')},
   );
   final cnpjFormartter = MaskTextInputFormatter(
-    mask: '##.###.###/####-##',
     filter: {'#': RegExp(r'[0-9]')},
+    mask: '##.###.###/####-##',
   );
 
   @override
@@ -52,10 +52,10 @@ class CustomTextField extends StatelessWidget {
       child: Obx(
         () => TextFormField(
             inputFormatters: [
-              maskCpfFormartter! ? cpfFormartter : noMask,
               maskDateFormartter! ? dateFormartter : noMask,
-              maskCnpjFormartter! ? cnpjFormartter : noMask,
               maskPhoneFormartter! ? phoneFormartter : noMask,
+              maskCpfFormartter! ? cpfFormartter : noMask,
+              maskCnpjFormartter! ? cnpjFormartter : noMask,
             ],
             obscureText: thisObscureText.value,
             decoration: InputDecoration(

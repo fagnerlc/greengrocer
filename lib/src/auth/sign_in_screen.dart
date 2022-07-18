@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:greengrocer/src/auth/components/custom_elevated_button.dart';
 import 'package:greengrocer/src/auth/components/custom_outlined_button.dart';
 import 'package:greengrocer/src/auth/components/custom_text_field.dart';
+import 'package:greengrocer/src/auth/sign_up_screen.dart';
+import 'package:greengrocer/src/base/base_screen.dart';
 import 'package:greengrocer/src/config/custom_colors.dart';
 
 class SignInScreen extends StatelessWidget {
@@ -100,7 +102,15 @@ class SignInScreen extends StatelessWidget {
                     ),
 
                     CustomElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (builder) {
+                              return BaseScreen();
+                            },
+                          ),
+                        );
+                      },
                       label: 'Entrar',
                     ),
                     Align(
@@ -132,7 +142,18 @@ class SignInScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    CustomOutlinedButton(),
+                    CustomOutlinedButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (builder) {
+                              return SignUpScreen();
+                            },
+                          ),
+                        );
+                      },
+                      label: 'Criar Conta',
+                    ),
                   ],
                 ),
               ),
