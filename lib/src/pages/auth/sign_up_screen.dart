@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:greengrocer/src/auth/components/custom_elevated_button.dart';
-import 'package:greengrocer/src/auth/components/custom_text_field.dart';
 import 'package:greengrocer/src/config/custom_colors.dart';
+import 'package:greengrocer/src/pages/auth/components/custom_elevated_button.dart';
+import 'package:greengrocer/src/pages/auth/components/custom_text_field.dart';
 
 class SignUpScreen extends StatelessWidget {
   const SignUpScreen({Key? key}) : super(key: key);

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:greengrocer/src/pages/home/home_tab.dart';
 
 class BaseScreen extends StatefulWidget {
   const BaseScreen({Key? key}) : super(key: key);
@@ -14,14 +15,11 @@ class _BaseScreenState extends State<BaseScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(''),
-      ),
       body: PageView(
         physics: const NeverScrollableScrollPhysics(),
         controller: pageController,
         children: [
-          Container(color: Colors.red),
+          HomeTab(),
           Container(color: Colors.yellow),
           Container(color: Colors.blue),
           Container(color: Colors.purple),
@@ -39,7 +37,7 @@ class _BaseScreenState extends State<BaseScreen> {
         backgroundColor: Colors.green,
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.white.withAlpha(100),
-        items: [
+        items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.shopping_cart_outlined), label: 'Carrinho'),
           BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Pedidos'),
