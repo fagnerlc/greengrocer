@@ -1,3 +1,5 @@
+import 'package:add_to_cart_animation/add_to_cart_animation.dart';
+import 'package:add_to_cart_animation/add_to_cart_icon.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -10,6 +12,13 @@ class HomeTab extends StatelessWidget {
   HomeTab({Key? key}) : super(key: key);
 
   RxString selectedCategory = ''.obs;
+  GlobalKey<CartIconKey> globalKeyCartItems = GlobalKey<CartIconKey>();
+
+  late Function(GlobalKey) runAddToCardAnimation;
+
+  void itemSelectedCartAnimation(GlobalKey gkImage) {
+    runAddToCardAnimation(gkImage);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,8 +41,8 @@ class HomeTab extends StatelessWidget {
                     fontSize: 12,
                   ),
                 ),
-                child: IconButton(
-                  onPressed: () {},
+                child: AddToCartIcon(
+                  key: globalKeyCartItems,
                   icon: Icon(
                     Icons.shopping_cart,
                     color: CustomColors.customSwatchColor,
@@ -48,71 +57,83 @@ class HomeTab extends StatelessWidget {
           TextSpan(text: 'grocer', style: TextStyle(color: CustomColors.customContrastColor)),
         ])),
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 20,
-              vertical: 10,
-            ),
-            child: TextFormField(
-              decoration: InputDecoration(
-                  isDense: true,
-                  filled: true,
-                  hintText: 'Pesquise aqui',
-                  hintStyle: TextStyle(
-                    color: Colors.grey.shade400,
-                    fontSize: 14,
-                  ),
-                  prefixIcon: Icon(
-                    Icons.search,
-                    color: CustomColors.customContrastColor,
-                    size: 21,
-                  ),
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(60),
-                    borderSide: BorderSide(width: 0, style: BorderStyle.none),
-                  )),
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.only(left: 25),
-            height: 40,
-            child: ListView.separated(
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (_, index) {
-                return Obx(() => CategoryTile(
-                      category: app_data.categorias[index],
-                      isSelected: app_data.categorias[index] == selectedCategory.value,
-                      onPressed: () {
-                        selectedCategory.value = app_data.categorias[index];
-                      },
-                    ));
-              },
-              separatorBuilder: (_, index) => const SizedBox(
-                width: 10,
+      body: AddToCartAnimation(
+        gkCart: globalKeyCartItems,
+        previewDuration: const Duration(milliseconds: 100),
+        previewCurve: Curves.ease,
+        receiveCreateAddToCardAnimationMethod: (addToCardAnimationMethod) {
+          runAddToCardAnimation = addToCardAnimationMethod;
+        },
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20,
+                vertical: 10,
               ),
-              itemCount: app_data.categorias.length,
-            ),
-          ),
-          Expanded(
-            child: GridView.builder(
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-              physics: const BouncingScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisSpacing: 10,
-                crossAxisSpacing: 10,
-                childAspectRatio: 9 / 11.5,
+              child: TextFormField(
+                decoration: InputDecoration(
+                    isDense: true,
+                    filled: true,
+                    hintText: 'Pesquise aqui',
+                    hintStyle: TextStyle(
+                      color: Colors.grey.shade400,
+                      fontSize: 14,
+                    ),
+                    prefixIcon: Icon(
+                      Icons.search,
+                      color: CustomColors.customContrastColor,
+                      size: 21,
+                    ),
+                    fillColor: Colors.white,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(60),
+                      borderSide: BorderSide(width: 0, style: BorderStyle.none),
+                    )),
               ),
-              itemBuilder: (_, index) {
-                return ItemTile(item: app_data.items[index]);
-              },
-              itemCount: app_data.items.length,
             ),
-          ),
-        ],
+            Container(
+              padding: const EdgeInsets.only(left: 25),
+              height: 40,
+              child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (_, index) {
+                  return Obx(() => CategoryTile(
+                        category: app_data.categorias[index],
+                        isSelected: app_data.categorias[index] == selectedCategory.value,
+                        onPressed: () {
+                          selectedCategory.value = app_data.categorias[index];
+                        },
+                      ));
+                },
+                separatorBuilder: (_, index) => const SizedBox(
+                  width: 10,
+                ),
+                itemCount: app_data.categorias.length,
+              ),
+            ),
+            // Grid
+            Expanded(
+              child: GridView.builder(
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                physics: const BouncingScrollPhysics(),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 10,
+                  crossAxisSpacing: 10,
+                  childAspectRatio: 9 / 11.5,
+                ),
+                itemBuilder: (_, index) {
+                  return ItemTile(
+                    item: app_data.items[index],
+                    cartAnimationMethod: itemSelectedCartAnimation,
+                  );
+                },
+                itemCount: app_data.items.length,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
