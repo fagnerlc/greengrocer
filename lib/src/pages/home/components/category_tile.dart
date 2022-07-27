@@ -14,11 +14,12 @@ class CategoryTile extends StatelessWidget {
   final VoidCallback onPressed;
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
+      borderRadius: BorderRadius.circular(30),
       onTap: onPressed,
       child: Align(
         alignment: Alignment.center,
-        child: Container(
+        child: Ink(
           padding: const EdgeInsets.symmetric(horizontal: 7),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
