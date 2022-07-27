@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:get/get.dart';
 import 'package:greengrocer/src/config/custom_colors.dart';
 import 'package:greengrocer/src/models/item_model.dart';
 import 'package:greengrocer/src/pages/product/product_screen.dart';
@@ -15,6 +15,14 @@ class ItemTile extends StatelessWidget {
     required this.cartAnimationMethod,
   }) : super(key: key);
   final UtilsServices utilsServices = UtilsServices();
+  Rx<IconData> tileIcon = Rx<IconData>(Icons.add_shopping_cart_outlined);
+
+  Future<void> switchIcon() async {
+    tileIcon.value = Icons.check;
+    await Future.delayed(const Duration(milliseconds: 1500));
+
+    tileIcon.value = Icons.add_shopping_cart_outlined;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,6 +95,7 @@ class ItemTile extends StatelessWidget {
             child: Material(
               child: InkWell(
                 onTap: () {
+                  switchIcon();
                   cartAnimationMethod(imageGk);
                 },
                 child: Ink(
@@ -95,11 +104,11 @@ class ItemTile extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: CustomColors.customSwatchColor,
                   ),
-                  child: const Icon(
-                    Icons.add_shopping_cart_outlined,
-                    color: Colors.white,
-                    size: 20,
-                  ),
+                  child: Obx(() => Icon(
+                        tileIcon.value,
+                        color: Colors.white,
+                        size: 20,
+                      )),
                 ),
               ),
             ),
