@@ -4,6 +4,7 @@ import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:greengrocer/src/config/custom_colors.dart';
+import 'package:greengrocer/src/pages/common_widgets/app_name_widget.dart';
 import 'package:greengrocer/src/pages/home/components/category_tile.dart';
 import 'package:greengrocer/src/config/app_data.dart' as app_data;
 import 'package:greengrocer/src/pages/home/components/item_tile.dart';
@@ -52,10 +53,7 @@ class HomeTab extends StatelessWidget {
             ),
           ),
         ],
-        title: Text.rich(TextSpan(style: TextStyle(fontSize: 30), children: [
-          TextSpan(text: 'Green', style: TextStyle(color: CustomColors.customSwatchColor)),
-          TextSpan(text: 'grocer', style: TextStyle(color: CustomColors.customContrastColor)),
-        ])),
+        title: const AppNameWidget(),
       ),
       body: AddToCartAnimation(
         gkCart: globalKeyCartItems,
