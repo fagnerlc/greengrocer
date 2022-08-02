@@ -13,6 +13,7 @@ class CustomTextField extends StatelessWidget {
   final bool? maskCpfFormartter;
   final bool? maskDateFormartter;
   final bool? maskCnpjFormartter;
+  final String? Function(String?)? validator;
 
   final bool? maskPhoneFormartter;
   final bool readOnly;
@@ -27,6 +28,7 @@ class CustomTextField extends StatelessWidget {
     this.maskCpfFormartter = false,
     this.maskDateFormartter = false,
     this.maskCnpjFormartter = false,
+    this.validator,
     this.maskPhoneFormartter = false,
     this.readOnly = false,
   }) : super(key: key);
@@ -65,6 +67,7 @@ class CustomTextField extends StatelessWidget {
               maskCnpjFormartter! ? cnpjFormartter : noMask,
             ],
             obscureText: thisObscureText.value,
+            validator: validator,
             decoration: InputDecoration(
               prefixIcon: Icon(icon),
               suffixIcon: obscureText == true && iconButtonAction == null

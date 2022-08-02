@@ -6,12 +6,11 @@ import 'package:greengrocer/src/pages/common_widgets/app_name_widget.dart';
 import 'package:greengrocer/src/pages/common_widgets/custom_elevated_button.dart';
 import 'package:greengrocer/src/pages/common_widgets/custom_outlined_button.dart';
 import 'package:greengrocer/src/pages/common_widgets/custom_text_field.dart';
-import 'package:greengrocer/src/pages/auth/sign_up_screen.dart';
-import 'package:greengrocer/src/pages/base/base_screen.dart';
 import 'package:greengrocer/src/pages_routes/app_pages.dart';
 
 class SignInScreen extends StatelessWidget {
-  const SignInScreen({Key? key}) : super(key: key);
+  SignInScreen({Key? key}) : super(key: key);
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -66,74 +65,87 @@ class SignInScreen extends StatelessWidget {
                     top: Radius.circular(45),
                   ),
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    // Email
-                    CustomTextField(
-                      icon: Icons.email,
-                      labelText: 'Email',
-                      iconButtonAction: () {
-                        debugPrint('object');
-                      },
-                      suffixIcon: Icons.mail,
-                    ),
-                    // Senha
-                    CustomTextField(
-                      icon: Icons.password,
-                      labelText: 'Senha',
-                      obscureText: true,
-                    ),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      // Email
+                      CustomTextField(
+                        icon: Icons.email,
+                        labelText: 'Email',
+                        iconButtonAction: () {
+                          debugPrint('object');
+                        },
+                        suffixIcon: Icons.mail,
+                        validator: (email) {
+                          if (email == null || email.isEmpty) return 'Digite seu email';
+                          //
+                          if (!email.isEmail) return 'Digite um email válido';
 
-                    CustomElevatedButton(
-                      onPressed: () {
-                        Get.offNamed(PagesRoutes.baseRoutes);
-                        // Navigator.of(context).pushReplacement(
-                        //   MaterialPageRoute(
-                        //     builder: (builder) {
-                        //       return BaseScreen();
-                        //     },
-                        //   ),
-                        // );
-                      },
-                      label: 'Entrar',
-                    ),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                        onPressed: () {},
-                        child: Text(
-                          'Esqueceu a senha?',
-                          style: TextStyle(color: CustomColors.customContrastColor),
+                          return null;
+                        },
+                      ),
+                      // Senha
+                      CustomTextField(
+                        icon: Icons.password,
+                        labelText: 'Senha',
+                        obscureText: true,
+                        validator: (password) {
+                          if (password == null || password.isEmpty) return 'Digite sua senha';
+                          if (password.length <= 3) return 'Digite no min 3 dígitos';
+                          return null;
+                        },
+                      ),
+
+                      CustomElevatedButton(
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            debugPrint('Todos os campos estão válidos');
+                          } else {
+                            debugPrint('Campos não estão válidos');
+                          }
+                          Get.offNamed(PagesRoutes.baseRoutes);
+                        },
+                        label: 'Entrar',
+                      ),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: TextButton(
+                          onPressed: () {},
+                          child: Text(
+                            'Esqueceu a senha?',
+                            style: TextStyle(color: CustomColors.customContrastColor),
+                          ),
                         ),
                       ),
-                    ),
 
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Divider(
-                            color: Colors.blueGrey.withAlpha(97),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Divider(
+                              color: Colors.blueGrey.withAlpha(97),
+                            ),
                           ),
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 14, vertical: 14),
-                          child: Text('Ou'),
-                        ),
-                        Expanded(
-                          child: Divider(
-                            color: Colors.blueGrey.withAlpha(97),
+                          const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+                            child: Text('Ou'),
                           ),
-                        ),
-                      ],
-                    ),
-                    CustomOutlinedButton(
-                      onPressed: () {
-                        Get.toNamed(PagesRoutes.signUpRoutes);
-                      },
-                      label: 'Criar Conta',
-                    ),
-                  ],
+                          Expanded(
+                            child: Divider(
+                              color: Colors.blueGrey.withAlpha(97),
+                            ),
+                          ),
+                        ],
+                      ),
+                      CustomOutlinedButton(
+                        onPressed: () {
+                          Get.toNamed(PagesRoutes.signUpRoutes);
+                        },
+                        label: 'Criar Conta',
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
