@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:greengrocer/src/pages/auth/sign_in_screen.dart';
+import 'package:get/get.dart';
 import 'package:greengrocer/src/pages/splash/splash_screen.dart';
+import 'package:greengrocer/src/pages_routes/app_pages.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,7 +13,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       // todo quando showSemanticsDebugger true, ele mostra o esqueleto do app
       // showSemanticsDebugger: true,
       debugShowCheckedModeBanner: false,
@@ -21,7 +22,8 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.green,
         scaffoldBackgroundColor: Colors.white.withAlpha(190),
       ),
-      home: const SplashScreen(),
+      getPages: AppPages.pages,
+      initialRoute: PagesRoutes.splashRoutes,
     );
   }
 }

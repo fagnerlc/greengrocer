@@ -162,7 +162,7 @@ class HomeTab extends StatelessWidget {
                           crossAxisSpacing: 10,
                           childAspectRatio: 9 / 11.5,
                           children: List.generate(
-                            4,
+                            7,
                             (index) => CustomShimmer(
                               height: double.infinity,
                               width: double.infinity,
