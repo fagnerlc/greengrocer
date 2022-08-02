@@ -14,6 +14,7 @@ class CustomTextField extends StatelessWidget {
   final bool? maskDateFormartter;
   final bool? maskCnpjFormartter;
   final String? Function(String?)? validator;
+  final TextEditingController? controller;
 
   final bool? maskPhoneFormartter;
   final bool readOnly;
@@ -29,6 +30,7 @@ class CustomTextField extends StatelessWidget {
     this.maskDateFormartter = false,
     this.maskCnpjFormartter = false,
     this.validator,
+    this.controller,
     this.maskPhoneFormartter = false,
     this.readOnly = false,
   }) : super(key: key);
@@ -58,6 +60,7 @@ class CustomTextField extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 14),
       child: Obx(
         () => TextFormField(
+            controller: controller,
             readOnly: readOnly,
             initialValue: initialValue,
             inputFormatters: [

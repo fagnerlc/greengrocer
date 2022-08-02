@@ -11,6 +11,8 @@ import 'package:greengrocer/src/pages_routes/app_pages.dart';
 class SignInScreen extends StatelessWidget {
   SignInScreen({Key? key}) : super(key: key);
   final _formKey = GlobalKey<FormState>();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -72,6 +74,7 @@ class SignInScreen extends StatelessWidget {
                     children: [
                       // Email
                       CustomTextField(
+                        controller: emailController,
                         icon: Icons.email,
                         labelText: 'Email',
                         iconButtonAction: () {
@@ -88,6 +91,7 @@ class SignInScreen extends StatelessWidget {
                       ),
                       // Senha
                       CustomTextField(
+                        controller: passwordController,
                         icon: Icons.password,
                         labelText: 'Senha',
                         obscureText: true,
@@ -102,10 +106,12 @@ class SignInScreen extends StatelessWidget {
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
                             debugPrint('Todos os campos estão válidos');
+                            debugPrint(emailController.text);
+                            debugPrint(passwordController.text);
                           } else {
                             debugPrint('Campos não estão válidos');
                           }
-                          Get.offNamed(PagesRoutes.baseRoutes);
+                          // Get.offNamed(PagesRoutes.baseRoutes);
                         },
                         label: 'Entrar',
                       ),
