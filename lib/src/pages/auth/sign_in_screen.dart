@@ -2,6 +2,7 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:greengrocer/src/config/custom_colors.dart';
+import 'package:greengrocer/src/pages/auth/controller/auth_controller.dart';
 import 'package:greengrocer/src/pages/common_widgets/app_name_widget.dart';
 import 'package:greengrocer/src/pages/common_widgets/custom_elevated_button.dart';
 import 'package:greengrocer/src/pages/common_widgets/custom_outlined_button.dart';
@@ -102,18 +103,33 @@ class SignInScreen extends StatelessWidget {
                         },
                       ),
 
-                      CustomElevatedButton(
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            debugPrint('Todos os campos estão válidos');
-                            debugPrint(emailController.text);
-                            debugPrint(passwordController.text);
-                          } else {
-                            debugPrint('Campos não estão válidos');
-                          }
-                          // Get.offNamed(PagesRoutes.baseRoutes);
+                      GetX<AuthController>(
+                        init: AuthController(),
+                        builder: (authController) {
+                          return authController.isLoading.value
+                              ? const Center(child: CircularProgressIndicator())
+                              : CustomElevatedButton(
+                                  onPressed: authController.isLoading.value
+                                      ? null
+                                      : () {
+                                          // faz com que o teclado desfoque ao clicar no entrar
+                                          FocusScope.of(context).unfocus();
+                                          if (_formKey.currentState!.validate()) {
+                                            String email = emailController.text;
+                                            String password = passwordController.text;
+                                            authController.signIn(email: email, password: password);
+
+                                            debugPrint('Todos os campos estão válidos');
+                                            debugPrint(emailController.text);
+                                            debugPrint(passwordController.text);
+                                          } else {
+                                            debugPrint('Campos não estão válidos');
+                                          }
+                                          // Get.offNamed(PagesRoutes.baseRoutes);
+                                        },
+                                  label: 'Entrar',
+                                );
                         },
-                        label: 'Entrar',
                       ),
                       Align(
                         alignment: Alignment.centerRight,
