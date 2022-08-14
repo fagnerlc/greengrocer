@@ -20,6 +20,10 @@ class AuthRepository {
       print('Signin funcionou');
     } else {
       print('Signin NÃO funcionou');
+      print(result['message']);
+      print(result['error']);
+      print(result['code']);
+      print(result);
     }
   }
 }
