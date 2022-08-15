@@ -6,6 +6,24 @@ import 'package:greengrocer/src/services/http_manager.dart';
 
 class AuthRepository {
   final HttpManager _httpManager = HttpManager();
+
+  Future<AuthResult> validateToken(String token) async {
+    final result = await _httpManager.restRequest(
+      url: Endpoints.validateToken,
+      method: HttpMethots.post,
+      headers: {
+        'X-Parse-Session-Token': token,
+      },
+    );
+
+    if (result['result'] != null) {
+      final user = UserModel.fromJson(result['result']);
+      return AuthResult.success(user);
+    } else {
+      return AuthResult.error(authErrors.authErrorsString(result['error']));
+    }
+  }
+
   Future<AuthResult> signIn({
     required String email,
     required String password,
@@ -21,21 +39,16 @@ class AuthRepository {
 
     if (result['result'] != null) {
       final user = UserModel.fromJson(result['result']);
-      print('Signin funcionou');
-      print('result[message]: ${result['message']}');
-      print('result[error]: ${result['error']}');
-      print('result[code]: ${result['code']}');
-      print('result[result]: ${result['result']}');
-      print('result: $result');
-      print('user: $user');
       return AuthResult.success(user);
     } else {
-      print('Signin NÃO funcionou');
-      print(result['message']);
-      print(result['error']);
-      print(result['code']);
-      print(result);
       return AuthResult.error(authErrors.authErrorsString(result['error']));
     }
   }
 }
+ // print('Signin funcionou');
+      // print('result[message]: ${result['message']}');
+      // print('result[error]: ${result['error']}');
+      // print('result[code]: ${result['code']}');
+      // print('result[result]: ${result['result']}');
+      // print('result: $result');
+      // print('user: $user');
