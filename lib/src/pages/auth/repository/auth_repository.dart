@@ -1,4 +1,5 @@
 import 'package:greengrocer/src/constants/endpoints.dart';
+import 'package:greengrocer/src/models/user_model.dart';
 import 'package:greengrocer/src/services/http_manager.dart';
 
 class AuthRepository {
@@ -18,6 +19,13 @@ class AuthRepository {
 
     if (result['result'] != null) {
       print('Signin funcionou');
+      final user = UserModel.fromJson(result['result']);
+      print('result[message]: ${result['message']}');
+      print('result[error]: ${result['error']}');
+      print('result[code]: ${result['code']}');
+      print('result[result]: ${result['result']}');
+      print('result: $result');
+      print('user: $user');
     } else {
       print('Signin NÃO funcionou');
       print(result['message']);

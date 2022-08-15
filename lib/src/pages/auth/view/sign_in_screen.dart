@@ -125,7 +125,7 @@ class SignInScreen extends StatelessWidget {
                                           } else {
                                             debugPrint('Campos não estão válidos');
                                           }
-                                          Get.offNamed(PagesRoutes.baseRoutes);
+                                          // Get.offNamed(PagesRoutes.baseRoutes);
                                         },
                                   label: 'Entrar',
                                 );
