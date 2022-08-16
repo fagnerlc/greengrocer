@@ -15,6 +15,12 @@ class AuthController extends GetxController {
 
   UserModel user = UserModel();
 
+  @override
+  void onInit() {
+    super.onInit();
+    validatorToken();
+  }
+
   Future<void> validatorToken() async {
     // Recuperar o token que foi salvo localmente
     String? token = await utilsServices.getLocalData(key: StorageKeys.token);
