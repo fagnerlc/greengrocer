@@ -8,6 +8,7 @@ import 'package:greengrocer/src/pages/common_widgets/custom_elevated_button.dart
 import 'package:greengrocer/src/pages/common_widgets/custom_outlined_button.dart';
 import 'package:greengrocer/src/pages/common_widgets/custom_text_field.dart';
 import 'package:greengrocer/src/pages_routes/app_pages.dart';
+import 'package:greengrocer/src/services/validators.dart';
 
 class SignInScreen extends StatelessWidget {
   SignInScreen({Key? key}) : super(key: key);
@@ -82,13 +83,7 @@ class SignInScreen extends StatelessWidget {
                           debugPrint('object');
                         },
                         suffixIcon: Icons.mail,
-                        validator: (email) {
-                          if (email == null || email.isEmpty) return 'Digite seu email';
-                          //
-                          if (!email.isEmail) return 'Digite um email válido';
-
-                          return null;
-                        },
+                        validator: emailValidator,
                       ),
                       // Senha
                       CustomTextField(
@@ -96,11 +91,7 @@ class SignInScreen extends StatelessWidget {
                         icon: Icons.password,
                         labelText: 'Senha',
                         obscureText: true,
-                        validator: (password) {
-                          if (password == null || password.isEmpty) return 'Digite sua senha';
-                          if (password.length <= 3) return 'Digite no min 3 dígitos';
-                          return null;
-                        },
+                        validator: passwordValidator,
                       ),
 
                       GetX<AuthController>(

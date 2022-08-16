@@ -3,8 +3,11 @@ import 'package:greengrocer/src/config/custom_colors.dart';
 import 'package:greengrocer/src/pages/common_widgets/custom_elevated_button.dart';
 import 'package:greengrocer/src/pages/common_widgets/custom_text_field.dart';
 
+import '../../../services/validators.dart';
+
 class SignUpScreen extends StatelessWidget {
-  const SignUpScreen({Key? key}) : super(key: key);
+  SignUpScreen({Key? key}) : super(key: key);
+  final _formkey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -45,34 +48,51 @@ class SignUpScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          CustomTextField(icon: Icons.email, labelText: 'Email'),
-                          CustomTextField(
-                            icon: Icons.lock,
-                            labelText: 'Senha',
-                            obscureText: true,
-                          ),
-                          CustomTextField(
-                            icon: Icons.person,
-                            labelText: 'Nome',
-                          ),
-                          CustomTextField(
-                            icon: Icons.phone,
-                            labelText: 'Celular',
-                            maskPhoneFormartter: true,
-                          ),
-                          CustomTextField(
-                            icon: Icons.file_copy,
-                            labelText: 'CPF',
-                            maskCpfFormartter: true,
-                          ),
-                          CustomElevatedButton(
-                            onPressed: () {},
-                            label: 'Cadastrar',
-                          ),
-                        ],
+                      child: Form(
+                        key: _formkey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            CustomTextField(
+                              icon: Icons.email,
+                              labelText: 'Email',
+                              keyboardType: TextInputType.emailAddress,
+                              validator: emailValidator,
+                            ),
+                            CustomTextField(
+                              icon: Icons.lock,
+                              labelText: 'Senha',
+                              obscureText: true,
+                              validator: passwordValidator,
+                            ),
+                            CustomTextField(
+                              icon: Icons.person,
+                              labelText: 'Nome',
+                              keyboardType: TextInputType.name,
+                              validator: nameValidator,
+                            ),
+                            CustomTextField(
+                              icon: Icons.phone,
+                              labelText: 'Celular',
+                              maskPhoneFormartter: true,
+                              keyboardType: TextInputType.phone,
+                              validator: phoneValidator,
+                            ),
+                            CustomTextField(
+                              icon: Icons.file_copy,
+                              labelText: 'CPF',
+                              maskCpfFormartter: true,
+                              keyboardType: TextInputType.number,
+                              validator: cpfValidator,
+                            ),
+                            CustomElevatedButton(
+                              onPressed: () {
+                                _formkey.currentState!.validate();
+                              },
+                              label: 'Cadastrar usuário',
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],
