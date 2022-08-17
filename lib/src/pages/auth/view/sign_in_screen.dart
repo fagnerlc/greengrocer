@@ -109,14 +109,7 @@ class SignInScreen extends StatelessWidget {
                                             String email = emailController.text;
                                             String password = passwordController.text;
                                             authController.signIn(email: email, password: password);
-
-                                            debugPrint('Todos os campos estão válidos');
-                                            debugPrint(emailController.text);
-                                            debugPrint(passwordController.text);
-                                          } else {
-                                            debugPrint('Campos não estão válidos');
                                           }
-                                          // Get.offNamed(PagesRoutes.baseRoutes);
                                         },
                                   label: 'Entrar',
                                 );

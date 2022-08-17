@@ -13,6 +13,7 @@ class CustomTextField extends StatelessWidget {
   final bool? maskCpfFormartter;
   final bool? maskDateFormartter;
   final bool? maskCnpjFormartter;
+  final void Function(String?)? onSaved;
   final TextInputType? keyboardType;
   final String? Function(String?)? validator;
   final TextEditingController? controller;
@@ -30,6 +31,7 @@ class CustomTextField extends StatelessWidget {
     this.maskCpfFormartter = false,
     this.maskDateFormartter = false,
     this.maskCnpjFormartter = false,
+    this.onSaved,
     this.keyboardType,
     this.validator,
     this.controller,
@@ -62,6 +64,8 @@ class CustomTextField extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 14),
       child: Obx(
         () => TextFormField(
+            //onSaved: dispensa uso de text controllers
+            onSaved: onSaved,
             keyboardType: keyboardType,
             controller: controller,
             readOnly: readOnly,

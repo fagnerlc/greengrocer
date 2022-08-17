@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:greengrocer/src/config/custom_colors.dart';
+import 'package:greengrocer/src/pages/auth/controller/auth_controller.dart';
 import 'package:greengrocer/src/pages/common_widgets/custom_elevated_button.dart';
 import 'package:greengrocer/src/pages/common_widgets/custom_text_field.dart';
 
 import '../../../services/validators.dart';
 
-class SignUpScreen extends StatelessWidget {
+class SignUpScreen extends GetView<AuthController> {
   SignUpScreen({Key? key}) : super(key: key);
   final _formkey = GlobalKey<FormState>();
 
@@ -58,18 +60,27 @@ class SignUpScreen extends StatelessWidget {
                               labelText: 'Email',
                               keyboardType: TextInputType.emailAddress,
                               validator: emailValidator,
+                              onSaved: (value) {
+                                controller.user.email = value;
+                              },
                             ),
                             CustomTextField(
                               icon: Icons.lock,
                               labelText: 'Senha',
                               obscureText: true,
                               validator: passwordValidator,
+                              onSaved: (value) {
+                                controller.user.password = value;
+                              },
                             ),
                             CustomTextField(
                               icon: Icons.person,
                               labelText: 'Nome',
                               keyboardType: TextInputType.name,
                               validator: nameValidator,
+                              onSaved: (value) {
+                                controller.user.name = value;
+                              },
                             ),
                             CustomTextField(
                               icon: Icons.phone,
@@ -77,6 +88,9 @@ class SignUpScreen extends StatelessWidget {
                               maskPhoneFormartter: true,
                               keyboardType: TextInputType.phone,
                               validator: phoneValidator,
+                              onSaved: (value) {
+                                controller.user.phone = value;
+                              },
                             ),
                             CustomTextField(
                               icon: Icons.file_copy,
@@ -84,12 +98,29 @@ class SignUpScreen extends StatelessWidget {
                               maskCpfFormartter: true,
                               keyboardType: TextInputType.number,
                               validator: cpfValidator,
-                            ),
-                            CustomElevatedButton(
-                              onPressed: () {
-                                _formkey.currentState!.validate();
+                              onSaved: (value) {
+                                controller.user.cpf = value;
                               },
-                              label: 'Cadastrar usuário',
+                            ),
+                            GetX<AuthController>(
+                              init: AuthController(),
+                              builder: (authController) {
+                                return authController.isLoading.value
+                                    ? const Center(child: CircularProgressIndicator())
+                                    : CustomElevatedButton(
+                                        onPressed: authController.isLoading.value
+                                            ? null
+                                            : () {
+                                                // faz com que o teclado desfoque ao clicar no entrar
+                                                FocusScope.of(context).unfocus();
+                                                if (_formkey.currentState!.validate()) {
+                                                  _formkey.currentState!.save();
+                                                  controller.signUp();
+                                                }
+                                              },
+                                        label: 'Cadastrar usuário',
+                                      );
+                              },
                             ),
                           ],
                         ),
