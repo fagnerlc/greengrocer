@@ -19,7 +19,7 @@ class AuthRepository {
   Future<AuthResult> validateToken(String token) async {
     final result = await _httpManager.restRequest(
       url: Endpoints.validateToken,
-      method: HttpMethots.post,
+      method: HttpMethods.post,
       headers: {
         'X-Parse-Session-Token': token,
       },
@@ -34,7 +34,7 @@ class AuthRepository {
   }) async {
     final result = await _httpManager.restRequest(
       url: Endpoints.signin,
-      method: HttpMethots.post,
+      method: HttpMethods.post,
       body: {
         'email': email,
         'password': password,
@@ -47,11 +47,19 @@ class AuthRepository {
   Future<AuthResult> signUp(UserModel user) async {
     final result = await _httpManager.restRequest(
       url: Endpoints.signup,
-      method: HttpMethots.post,
+      method: HttpMethods.post,
       // todo enviar dados
       body: user.toJson(),
     );
     return handleUserOrError(result);
+  }
+
+  Future<void> resetPassword(String email) async {
+    await _httpManager.restRequest(
+      url: Endpoints.resetPassword,
+      method: HttpMethods.post,
+      body: {'email': email},
+    );
   }
 }
  // print('Signin funcionou');

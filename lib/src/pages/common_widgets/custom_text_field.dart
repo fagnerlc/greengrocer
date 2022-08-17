@@ -4,6 +4,7 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class CustomTextField extends StatelessWidget {
+  final GlobalKey<FormFieldState>? formFieldKey;
   final IconData icon;
   final IconData? suffixIcon;
   final String labelText;
@@ -22,6 +23,7 @@ class CustomTextField extends StatelessWidget {
   final bool readOnly;
   CustomTextField({
     Key? key,
+    this.formFieldKey,
     required this.icon,
     this.suffixIcon,
     required this.labelText,
@@ -65,6 +67,7 @@ class CustomTextField extends StatelessWidget {
       child: Obx(
         () => TextFormField(
             //onSaved: dispensa uso de text controllers
+            key: formFieldKey,
             onSaved: onSaved,
             keyboardType: keyboardType,
             controller: controller,
