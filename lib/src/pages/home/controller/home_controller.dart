@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:greengrocer/src/models/category_model.dart';
 import 'package:greengrocer/src/models/item_model.dart';
@@ -16,12 +15,9 @@ class HomeController extends GetxController {
 
   bool isCategoryLoading = false;
   bool isProductLoading = true;
-
-  var isLoading = false;
-
   List<CategoryModel> allCategories = [];
-
   CategoryModel? currentCategory;
+  List<ItemModel> get allProducts => currentCategory?.items ?? [];
 
   void setLoading(bool value, {bool isProduct = false}) {
     if (!isProduct) {
@@ -29,7 +25,6 @@ class HomeController extends GetxController {
     } else {
       isProductLoading = value;
     }
-    isLoading = value;
     // update do Get para refletir a modificação com GetBuilder<HomeController>
     update();
   }
@@ -43,6 +38,8 @@ class HomeController extends GetxController {
   void selectCategory(CategoryModel category) {
     currentCategory = category;
     update();
+
+    if (currentCategory!.items.isNotEmpty) return;
     getAllProducts();
   }
 
@@ -72,12 +69,12 @@ class HomeController extends GetxController {
       'categoryId': currentCategory!.id,
       'itemsPerPage': itemPerpage,
     };
-    setLoading(true);
+    setLoading(true, isProduct: true);
     HomeResult<ItemModel> result = await homeRepository.getAllProducts(body);
-    setLoading(false);
+    setLoading(false, isProduct: true);
     result.when(
       success: (data) {
-        debugPrint('$data');
+        currentCategory!.items = data;
       },
       error: (message) {
         utilsServices.showToast(

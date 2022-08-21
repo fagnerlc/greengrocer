@@ -65,6 +65,7 @@ class HomeTab extends GetView<HomeController> {
         },
         child: Column(
           children: [
+            // Campo de Pesquisa
             Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: 20,
@@ -100,7 +101,7 @@ class HomeTab extends GetView<HomeController> {
                 return Container(
                   padding: const EdgeInsets.only(left: 25),
                   height: 40,
-                  child: !controller.isLoading
+                  child: !controller.isCategoryLoading
                       ? ListView.separated(
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (_, index) {
@@ -141,7 +142,7 @@ class HomeTab extends GetView<HomeController> {
               initState: (_) {},
               builder: (_) {
                 return Expanded(
-                  child: !controller.isLoading
+                  child: !controller.isProductLoading
                       ? GridView.builder(
                           padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
                           physics: const BouncingScrollPhysics(),
@@ -153,11 +154,11 @@ class HomeTab extends GetView<HomeController> {
                           ),
                           itemBuilder: (_, index) {
                             return ItemTile(
-                              item: app_data.items[index],
+                              item: controller.allProducts[index],
                               cartAnimationMethod: itemSelectedCartAnimation,
                             );
                           },
-                          itemCount: app_data.items.length,
+                          itemCount: controller.allProducts.length,
                         )
                       : GridView.count(
                           padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
