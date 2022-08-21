@@ -7,13 +7,13 @@ import 'package:greengrocer/src/config/custom_colors.dart';
 import 'package:greengrocer/src/pages/common_widgets/app_name_widget.dart';
 import 'package:greengrocer/src/pages/common_widgets/custom_shimmer.dart';
 import 'package:greengrocer/src/config/app_data.dart' as app_data;
+import 'package:greengrocer/src/pages/home/controller/home_controller.dart';
 import 'package:greengrocer/src/pages/home/view/components/category_tile.dart';
 import 'package:greengrocer/src/pages/home/view/components/item_tile.dart';
 
-class HomeTab extends StatelessWidget {
+class HomeTab extends GetView<HomeController> {
   HomeTab({Key? key}) : super(key: key);
 
-  RxString selectedCategory = ''.obs;
   GlobalKey<CartIconKey> globalKeyCartItems = GlobalKey<CartIconKey>();
 
   late Function(GlobalKey) runAddToCardAnimation;
@@ -22,13 +22,8 @@ class HomeTab extends StatelessWidget {
     runAddToCardAnimation(gkImage);
   }
 
-  var isLoading = true.obs;
-
   @override
   Widget build(BuildContext context) {
-    Future.delayed(const Duration(seconds: 3), () {
-      isLoading.value = false;
-    });
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -98,25 +93,29 @@ class HomeTab extends StatelessWidget {
             ),
 
             // Categorias
-            Obx(() => Container(
+            GetBuilder<HomeController>(
+              init: HomeController(),
+              initState: (_) {},
+              builder: (_) {
+                return Container(
                   padding: const EdgeInsets.only(left: 25),
                   height: 40,
-                  child: !isLoading.value
+                  child: !controller.isLoading
                       ? ListView.separated(
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (_, index) {
-                            return Obx(() => CategoryTile(
-                                  category: app_data.categorias[index],
-                                  isSelected: app_data.categorias[index] == selectedCategory.value,
-                                  onPressed: () {
-                                    selectedCategory.value = app_data.categorias[index];
-                                  },
-                                ));
+                            return CategoryTile(
+                              category: controller.allCategories[index].title,
+                              isSelected: controller.allCategories[index] == controller.currentCategory,
+                              onPressed: () {
+                                controller.selectCategory(controller.allCategories[index]);
+                              },
+                            );
                           },
                           separatorBuilder: (_, index) => const SizedBox(
                             width: 10,
                           ),
-                          itemCount: app_data.categorias.length,
+                          itemCount: controller.allCategories.length,
                         )
                       : ListView(
                           scrollDirection: Axis.horizontal,
@@ -133,10 +132,16 @@ class HomeTab extends StatelessWidget {
                             ),
                           ),
                         ),
-                )),
+                );
+              },
+            ),
             // Grid
-            Obx(() => Expanded(
-                  child: !isLoading.value
+            GetBuilder<HomeController>(
+              init: HomeController(),
+              initState: (_) {},
+              builder: (_) {
+                return Expanded(
+                  child: !controller.isLoading
                       ? GridView.builder(
                           padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
                           physics: const BouncingScrollPhysics(),
@@ -170,7 +175,9 @@ class HomeTab extends StatelessWidget {
                             ),
                           ),
                         ),
-                )),
+                );
+              },
+            ),
           ],
         ),
       ),

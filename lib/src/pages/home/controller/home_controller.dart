@@ -10,12 +10,22 @@ class HomeController extends GetxController {
   final HomeRepository homeRepository = HomeRepository();
   final UtilsServices utilsServices = UtilsServices();
 
-  bool isLoading = false;
+  bool isCategoryLoading = false;
+  bool isProductLoading = true;
+
+  var isLoading = false;
+
   List<CategoryModel> allCategories = [];
 
-  void setLoading(bool value) {
-    isLoading = value;
-    // update do Get para refletir a modificação
+  CategoryModel? currentCategory;
+
+  void setLoading(bool value, {bool isProduct = false}) {
+    if (!isProduct) {
+      isCategoryLoading = value;
+    } else {
+      isProductLoading = value;
+    }
+    // update do Get para refletir a modificação com GetBuilder<HomeController>
     update();
   }
 
@@ -23,6 +33,11 @@ class HomeController extends GetxController {
   void onInit() {
     super.onInit();
     getAllCategories();
+  }
+
+  void selectCategory(CategoryModel category) {
+    currentCategory = category;
+    update();
   }
 
   Future<void> getAllCategories() async {
@@ -35,7 +50,9 @@ class HomeController extends GetxController {
     homeResult.when(
       success: (data) {
         allCategories.assignAll(data);
-        print('Todas as categorias: $allCategories');
+
+        if (allCategories.isEmpty) return;
+        selectCategory(allCategories.first);
       },
       error: (message) {
         utilsServices.showToast(message: message, isError: true);
