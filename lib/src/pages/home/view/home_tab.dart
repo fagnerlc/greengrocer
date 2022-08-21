@@ -21,9 +21,12 @@ class HomeTab extends StatelessWidget {
     runAddToCardAnimation(gkImage);
   }
 
+  final controller = Get.find<HomeController>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // AppBar
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -73,8 +76,12 @@ class HomeTab extends StatelessWidget {
                     vertical: 10,
                   ),
                   child: TextFormField(
+                    onChanged: (value) {
+                      controller.searchTitle.value = value;
+                    },
                     decoration: InputDecoration(
                         isDense: true,
+                        fillColor: Colors.white,
                         filled: true,
                         hintText: 'Pesquise aqui',
                         hintStyle: TextStyle(
@@ -86,7 +93,6 @@ class HomeTab extends StatelessWidget {
                           color: CustomColors.customContrastColor,
                           size: 21,
                         ),
-                        fillColor: Colors.white,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(60),
                           borderSide: BorderSide(width: 0, style: BorderStyle.none),

@@ -37,10 +37,11 @@ class HomeController extends GetxController {
   void onInit() {
     super.onInit();
 
+    // debounce, vai ficar observando a variável a cada 700 milesegundos
     debounce(
       searchTitle,
       (_) => filterByTitle(),
-      time: const Duration(milliseconds: 600),
+      time: const Duration(milliseconds: 700),
     );
 
     getAllCategories();
