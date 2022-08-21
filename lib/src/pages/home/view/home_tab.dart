@@ -15,13 +15,13 @@ class HomeTab extends StatelessWidget {
 
   GlobalKey<CartIconKey> globalKeyCartItems = GlobalKey<CartIconKey>();
 
+  final searchController = TextEditingController();
+
   late Function(GlobalKey) runAddToCardAnimation;
 
   void itemSelectedCartAnimation(GlobalKey gkImage) {
     runAddToCardAnimation(gkImage);
   }
-
-  final controller = Get.find<HomeController>();
 
   @override
   Widget build(BuildContext context) {
@@ -76,10 +76,24 @@ class HomeTab extends StatelessWidget {
                     vertical: 10,
                   ),
                   child: TextFormField(
+                    controller: searchController,
                     onChanged: (value) {
                       controller.searchTitle.value = value;
                     },
                     decoration: InputDecoration(
+                        suffixIcon: controller.searchTitle.value.isNotEmpty
+                            ? IconButton(
+                                onPressed: () {
+                                  searchController.clear();
+                                  controller.searchTitle.value = '';
+                                  FocusScope.of(context).unfocus(); // fecha teclado
+                                },
+                                icon: Icon(
+                                  Icons.close,
+                                  color: CustomColors.customContrastColor,
+                                  size: 21,
+                                ))
+                            : null,
                         isDense: true,
                         fillColor: Colors.white,
                         filled: true,
@@ -95,7 +109,7 @@ class HomeTab extends StatelessWidget {
                         ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(60),
-                          borderSide: BorderSide(width: 0, style: BorderStyle.none),
+                          borderSide: const BorderSide(width: 0, style: BorderStyle.none),
                         )),
                   ),
                 );
