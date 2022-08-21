@@ -6,12 +6,11 @@ import 'package:get/get.dart';
 import 'package:greengrocer/src/config/custom_colors.dart';
 import 'package:greengrocer/src/pages/common_widgets/app_name_widget.dart';
 import 'package:greengrocer/src/pages/common_widgets/custom_shimmer.dart';
-import 'package:greengrocer/src/config/app_data.dart' as app_data;
 import 'package:greengrocer/src/pages/home/controller/home_controller.dart';
 import 'package:greengrocer/src/pages/home/view/components/category_tile.dart';
 import 'package:greengrocer/src/pages/home/view/components/item_tile.dart';
 
-class HomeTab extends GetView<HomeController> {
+class HomeTab extends StatelessWidget {
   HomeTab({Key? key}) : super(key: key);
 
   GlobalKey<CartIconKey> globalKeyCartItems = GlobalKey<CartIconKey>();
@@ -66,38 +65,40 @@ class HomeTab extends GetView<HomeController> {
         child: Column(
           children: [
             // Campo de Pesquisa
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 20,
-                vertical: 10,
-              ),
-              child: TextFormField(
-                decoration: InputDecoration(
-                    isDense: true,
-                    filled: true,
-                    hintText: 'Pesquise aqui',
-                    hintStyle: TextStyle(
-                      color: Colors.grey.shade400,
-                      fontSize: 14,
-                    ),
-                    prefixIcon: Icon(
-                      Icons.search,
-                      color: CustomColors.customContrastColor,
-                      size: 21,
-                    ),
-                    fillColor: Colors.white,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(60),
-                      borderSide: BorderSide(width: 0, style: BorderStyle.none),
-                    )),
-              ),
+            GetBuilder<HomeController>(
+              builder: (controller) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 10,
+                  ),
+                  child: TextFormField(
+                    decoration: InputDecoration(
+                        isDense: true,
+                        filled: true,
+                        hintText: 'Pesquise aqui',
+                        hintStyle: TextStyle(
+                          color: Colors.grey.shade400,
+                          fontSize: 14,
+                        ),
+                        prefixIcon: Icon(
+                          Icons.search,
+                          color: CustomColors.customContrastColor,
+                          size: 21,
+                        ),
+                        fillColor: Colors.white,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(60),
+                          borderSide: BorderSide(width: 0, style: BorderStyle.none),
+                        )),
+                  ),
+                );
+              },
             ),
 
             // Categorias
             GetBuilder<HomeController>(
-              init: HomeController(),
-              initState: (_) {},
-              builder: (_) {
+              builder: (controller) {
                 return Container(
                   padding: const EdgeInsets.only(left: 25),
                   height: 40,
@@ -138,27 +139,43 @@ class HomeTab extends GetView<HomeController> {
             ),
             // Grid
             GetBuilder<HomeController>(
-              init: HomeController(),
-              initState: (_) {},
-              builder: (_) {
+              builder: (controller) {
                 return Expanded(
                   child: !controller.isProductLoading
-                      ? GridView.builder(
-                          padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-                          physics: const BouncingScrollPhysics(),
-                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            mainAxisSpacing: 10,
-                            crossAxisSpacing: 10,
-                            childAspectRatio: 9 / 11.5,
+                      ? Visibility(
+                          visible: (controller.currentCategory?.items ?? []).isNotEmpty,
+                          child: GridView.builder(
+                            padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                            physics: const BouncingScrollPhysics(),
+                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              mainAxisSpacing: 10,
+                              crossAxisSpacing: 10,
+                              childAspectRatio: 9 / 11.5,
+                            ),
+                            itemCount: controller.allProducts.length,
+                            itemBuilder: (_, index) {
+                              // se for igual, já estamos trazendo o valor da lista inteira
+                              if (((index + 1) == controller.allProducts.length) && !controller.isLastPage) {
+                                controller.loadMoreProducts();
+                              }
+                              return ItemTile(
+                                item: controller.allProducts[index],
+                                cartAnimationMethod: itemSelectedCartAnimation,
+                              );
+                            },
                           ),
-                          itemBuilder: (_, index) {
-                            return ItemTile(
-                              item: controller.allProducts[index],
-                              cartAnimationMethod: itemSelectedCartAnimation,
-                            );
-                          },
-                          itemCount: controller.allProducts.length,
+                          replacement: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.search_off,
+                                size: 40,
+                                color: CustomColors.customSwatchColor,
+                              ),
+                              const Text('Não há itens para apresentar'),
+                            ],
+                          ),
                         )
                       : GridView.count(
                           padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
@@ -168,7 +185,7 @@ class HomeTab extends GetView<HomeController> {
                           crossAxisSpacing: 10,
                           childAspectRatio: 9 / 11.5,
                           children: List.generate(
-                            7,
+                            10,
                             (index) => CustomShimmer(
                               height: double.infinity,
                               width: double.infinity,
