@@ -6,6 +6,8 @@ import 'package:greengrocer/src/pages/home/repository/home_repository.dart';
 import 'package:greengrocer/src/pages/home/result/home_result.dart';
 import 'package:greengrocer/src/services/utils_services.dart';
 
+const int itemPerpage = 6;
+
 class HomeController extends GetxController {
 // final MyRepository repository;
 // HomeController(this.repository);
@@ -66,10 +68,9 @@ class HomeController extends GetxController {
 
   Future<void> getAllProducts() async {
     Map<String, dynamic> body = {
-      "page": 0,
-      "title": null,
-      "categoryId": "5mjkt5ERRo",
-      "itemsPerPage": 6,
+      'page': currentCategory!.pagination,
+      'categoryId': currentCategory!.id,
+      'itemsPerPage': itemPerpage,
     };
     setLoading(true);
     HomeResult<ItemModel> result = await homeRepository.getAllProducts(body);
