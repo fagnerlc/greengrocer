@@ -27,7 +27,7 @@ class ProductScreen extends StatelessWidget {
               Expanded(
                 child: Hero(
                   tag: item.imgUrl,
-                  child: Image.asset(item.imgUrl),
+                  child: Image.network(item.imgUrl),
                 ),
               ),
               Expanded(
