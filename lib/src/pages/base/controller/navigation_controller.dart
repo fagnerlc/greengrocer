@@ -36,7 +36,8 @@ class NavigationController extends GetxController {
   void navigatePageView(int page) {
     if (_currentIndex.value == page) return;
 
-    _pageController.jumpToPage(page);
+    // _pageController.jumpToPage(page);
+    pageController.animateToPage(page, duration: const Duration(milliseconds: 700), curve: Curves.ease);
     _currentIndex.value = page;
   }
 }
